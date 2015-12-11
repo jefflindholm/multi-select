@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var React = require('react');
+var classNames = require('classnames');
 
 var Button = require('elemental/lib/components/Button');
 var Form = require('elemental/lib/components/Form');
@@ -10,21 +11,32 @@ var FormRow = require('elemental/lib/components/FormRow');
 var Glyph = require('elemental/lib/components/Glyph');
 var InputGroup = require('elemental/lib/components/InputGroup');
 
-var Dropdown = require('react-dropdown');
-
 module.exports = React.createClass({
-
-    getDefaultProps: function() {
+    propTypes: {
+        clearable: React.PropTypes.bool,
+        searchable: React.PropTypes.bool,
+        initialValues: React.PropTypes.arrayOf(React.PropTypes.object),
+        items: React.PropTypes.arrayOf(React.PropTypes.object),
+        labelKey: React.PropTypes.string,
+        valueKey: React.PropTypes.string
+    },
+    _ariaGetListId() {
+        return this.state.controlId + '_list';
+    },
+    getDefaultProps() {
         return {
             items: [],
-            placeholder: 'Enter some filter text',
+            initialValues: [],
             onChange: function() {},
-            onItemSelected: function() {},
-            onItemDeselected: function() {}
+            valueKey: 'value',
+            labelKey: 'label',
+            clearable: true,
+            searchable: false
         }
     },
-    getInitialState: function() {
+    getInitialState() {
         return {
+            controlId: _.uniqueId('rss_'),
             options: [],
             selections: [],
             title: this.props.placeholder,
@@ -32,20 +44,25 @@ module.exports = React.createClass({
         }
     },
     componentWillReceiveProps(newProps) {
-        var data = newProps.items.map(function(item){
-            let key = 'value' in item ? item.value : item.id;
-            let text = 'text' in item ? item.text
-                : 'name' in item ? item.name
-                : key;
-            return { value: key, label: text }
+        let data = newProps.items.map(function(item){
+            let newItem = {};
+            newItem[newProps.valueKey] = item[newProps.valueKey];
+            newItem[newProps.labelKey] = item[newProps.labelKey];
+            return newItem;
+            //return { value: item[newProps.valueKey], label: item[newProps.labelKey] }
         });
-        console.log('data', data);
-        this.setState({options: data});
+        let selections = newProps.initialValues.map(function(val){
+            let index = _.findIndex(data, newProps.valueKey, val[newProps.valueKey]);
+            data[index].selected = true;
+            return data[index];
+        });
+        this.setState({options: data, selections: selections});
     },
     valueClicked(option) {
-        var index = _.findIndex(this.state.options, 'value', option.value);
-        var selIndex = _.findIndex(this.state.selections, 'value', option.value);
-        var selected = selIndex === -1;
+        let index = _.findIndex(this.state.options, this.props.valueKey, option[this.props.valueKey]);
+        let selIndex = _.findIndex(this.state.selections, this.props.valueKey, option[this.props.valueKey]);
+
+        let selected = selIndex === -1;
         if ( selIndex !== -1 ) {
             this.state.selections.splice(selIndex, 1);
         } else {
@@ -56,44 +73,77 @@ module.exports = React.createClass({
             selections: this.state.selections,
             options: this.state.options
         });
+        this.props.onChange(option, this.state.selections);
     },
-    renderOption(option) {
-        var classNames = 'Dropdown-option ' + (option.selected ? 'is-selected' : '');
+    renderOption(dataOption, index) {
+        var itemKey = "drop_li_" + dataOption[this.props.valueKey],
+            indexRef = 'option_' + index,
+            ariaDescendantId = this.state.controlId + '_aria_' + indexRef,
+            classes = classNames('r-ss-dropdown-option', {
+                'r-ss-selected': dataOption.selected
+            });
+
         return (
-            <div
-                key={option.value}
-                className={classNames}
-                onClick={this.valueClicked.bind(this, option)}
-                >
-                {option.label}
-            </div>
-        )
+            <li ref={indexRef}
+                id={ariaDescendantId}
+                tabIndex="0"
+                data-option-index={index}
+                className={classes}
+                aria-selected={dataOption.selected}
+                key={itemKey}
+                data-option-value={dataOption[this.props.valueKey]}
+                onClick={this.valueClicked.bind(null, dataOption)}
+                role="option">
+                {dataOption[this.props.labelKey]}
+            </li>);
     },
-    buildMenu() {
-        let ops = this.state.options.map((option) => {
-            if ( option.type === 'group' ) {
-                return (<div className="title" key={option.value}>{option.label}</div>);
-            } else {
-                return this.renderOption(option);
-            }
-        });
-        return ops.length ? (<div>{ops}</div>) : null;
+    buildOptions() {
+        let ops = this.state.options.map(this.renderOption);
+
+        return (
+            <div ref="dropdownContent" className="r-ss-dropdown" onKeyDown={this._handleKeyDown}>
+                <div ref="scrollWrap" className="r-ss-options-wrap">
+                    <ul className="r-ss-dropdown-options"
+                        ref="dropdownOptionsList"
+                        tabIndex="-1"
+                        id={this._ariaGetListId()}
+                        role="listbox"
+                        aria-expanded={this.state.isOpen}>
+                        {ops}
+                    </ul>
+                </div>
+            </div>
+        );
     },
     toggleList() {
         this.setState({listOpen: !this.state.listOpen});
-        console.log('state', this.state);
     },
-    render: function() {
-        let menu = this.state.listOpen ? this.buildMenu() : null;
+    clearSelected() {
+        this.setState({selections: []});
+        this.props.onChange(null, []);
+    },
+    render() {
+        let menu = this.state.listOpen ? this.buildOptions() : null;
         return (
             <div>
                 <InputGroup contiguous>
                     <InputGroup.Section grow>
-                        <FormInput autofocus placeholder={this.props.placeholder} onChange={this.handleFilterChange}
-                                   value={this.state.filter}/>
+                        <FormInput autofocus
+                                   onChange={this.handleFilterChange}
+                                   readOnly={true}
+                                   value={this.state.selections.length + ' selected'}>
+                        </FormInput>
                     </InputGroup.Section>
+                    {
+                        (this.props.clearable && this.state.selections.length > 0) ?
+                            <InputGroup.Section>
+                                <Button type="hollow-danger" onClick={this.clearSelected}><Glyph icon='circle-slash'/></Button>
+                            </InputGroup.Section>
+                            :
+                            null
+                    }
                     <InputGroup.Section>
-                        <Button onClick={this.toggleList}><Glyph icon="triangle-down"/></Button>
+                        <Button onClick={this.toggleList}><Glyph icon={"triangle-" + (this.state.listOpen ? 'up' : 'down')}/></Button>
                     </InputGroup.Section>
                 </InputGroup>
                 {menu}
