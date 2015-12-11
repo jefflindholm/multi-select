@@ -1,54 +1,53 @@
-.header .active {
-  font-weight: 900; }
+div .multiselect {
+  padding: 25px;
+  width: 400px; }
 
-.image-detail .panel-body {
-  text-align: center; }
+div .multiselect ul {
+  background: #fff;
+  list-style: none;
+  padding: 0;
+  height: 200px;
+  overflow-y: auto;
+  margin-top: 10px;
+  border: 1px solid #f0f0f0; }
 
-.image-detail img, .image-detail video {
-  max-width: 100%; }
+div .multiselect input {
+  width: 100%; }
 
-.image-preview {
-  display: inline-block;
-  position: relative; }
-  .image-preview .inset {
-    position: absolute;
-    bottom: 5px;
-    left: 0;
-    width: 100%;
-    background-color: white;
-    text-align: center;
-    opacity: .7; }
-  .image-preview .glyphicon {
-    position: absolute;
-    top: 50%;
+div .multiselect li {
+  cursor: pointer;
+  border-top: 1px solid #f0f0f0; }
+
+div .multiselect li:hover {
+  background: #f0f0f0; }
+
+div .multiselect .selected {
+  background: #ddddff; }
+
+div .multiselect .selected:hover {
+  background: #e8e8ff; }
+
+.popover {
+  background-color: rgba(0, 0, 0, 0.85);
+  border-radius: 5px;
+  bottom: 42px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  color: #fff;
+  display: none;
+  font-size: 12px;
+  font-family: 'Helvetica',sans-serif;
+  left: -95px;
+  padding: 7px 10px;
+  position: absolute;
+  width: 200px;
+  z-index: 4; }
+  .popover:before {
+    border-top: 7px solid rgba(0, 0, 0, 0.85);
+    border-right: 7px solid transparent;
+    border-left: 7px solid transparent;
+    bottom: -7px;
+    content: '';
+    display: block;
     left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 50px;
-    opacity: .5;
-    color: white; }
-  .image-preview img {
-    height: 200px;
-    width: 200px;
-    display: inline-block; }
-  .image-preview video {
-    height: 200px;
-    width: 200px;
-    vertical-align: middle;
-    background-color: black; }
-
-.black {
-  color: black; }
-
-.red {
-  color: red; }
-
-.topic {
-  text-align: center; }
-  .topic .image-preview {
-    animation: fadein .65s ease-out; }
-
-@keyframes fadein {
-  0% {
-    opacity: 0; }
-  100% {
-    opacity: 1.0; } }
+    margin-left: -7px;
+    position: absolute; }

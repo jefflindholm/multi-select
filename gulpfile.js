@@ -10,6 +10,8 @@ var concat = require('gulp-concat');
 var sass = require('gulp-sass');
 var watch = require('gulp-watch');
 
+var gnotify = require('gulp-notify');
+
 var notify = function(error) {
   var message = 'In: ';
   var title = 'Error: ';
@@ -30,11 +32,16 @@ var notify = function(error) {
   }
 
   notifier.notify({title: title, message: message});
+
+  gnotify(title, message);
+
+  console.log(title, message);
 };
 
 var bundler = watchify(browserify({
   entries: ['./src/app.jsx'],
-  transform: [reactify],
+//  transform: [reactify],
+  transform: [["babelify", {presets: ["es2015", 'react']}]],
   extensions: ['.jsx'],
   debug: true,
   cache: {},

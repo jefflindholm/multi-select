@@ -5,6 +5,5 @@ module.exports = Reflux.createActions([
     'getStates',
     'getCountries',
     'getMarkets',
-    'getRegions',
-    'getStatuses'
+    'getRegions'
 ]);
