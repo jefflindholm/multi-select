@@ -49,7 +49,6 @@ module.exports = React.createClass({
             newItem[newProps.valueKey] = item[newProps.valueKey];
             newItem[newProps.labelKey] = item[newProps.labelKey];
             return newItem;
-            //return { value: item[newProps.valueKey], label: item[newProps.labelKey] }
         });
         let selections = newProps.initialValues.map(function(val){
             let index = _.findIndex(data, newProps.valueKey, val[newProps.valueKey]);
@@ -119,10 +118,52 @@ module.exports = React.createClass({
         this.setState({listOpen: !this.state.listOpen});
     },
     clearSelected() {
-        this.setState({selections: []});
+        var data = this.state.options;
+        let i = 0;
+        for(i = 0; i < data.length; i++) {
+            data[i].selected = false;
+        }
+        this.setState({selections: [], options: data});
         this.props.onChange(null, []);
     },
     render() {
+        return this.render_elemental();
+    },
+    render_bootstrap() {
+        let menu = this.state.listOpen ? this.buildOptions() : null;
+
+        return (
+            <div>
+                <div className="input-group">
+                    <input type="text" 
+                            className="form-control"
+                            autofocus
+                            onChange={this.handleFilterChange}
+                            readOnly={true}
+                            value={this.state.selections.length + ' selected'}>
+                    </input>
+                    {
+                        (this.props.clearable && this.state.selections.length > 0) ?
+                            <span className="input-group-btn">
+                                <button className="btn btn-default" type="button" onClick={this.clearSelected}>
+                                    <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </button>
+                            </span>
+                            :
+                            null
+                    }
+                    
+                    <span className="input-group-btn">
+                        <button className="btn btn-default" onClick={this.toggleList} type="button">
+                            <span aria-hidden="true" className={"glyphicon glyphicon-triangle-" + (this.state.listOpen ? 'top' : 'bottom')}></span>
+                        </button>
+                    </span>
+                </div>
+                {menu}
+            </div>
+        );
+    },
+    render_elemental() {
         let menu = this.state.listOpen ? this.buildOptions() : null;
         return (
             <div>
