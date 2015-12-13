@@ -2,14 +2,7 @@ var _ = require('lodash');
 var React = require('react');
 var classNames = require('classnames');
 
-var Button = require('elemental/lib/components/Button');
-var Form = require('elemental/lib/components/Form');
-var FormField = require('elemental/lib/components/FormField');
-var FormInput = require('elemental/lib/components/FormInput');
-var FormLabel = require('elemental/lib/components/FormLabel');
-var FormRow = require('elemental/lib/components/FormRow');
-var Glyph = require('elemental/lib/components/Glyph');
-var InputGroup = require('elemental/lib/components/InputGroup');
+import {Button, FormInput, Glyph, InputGroup} from 'elemental';
 
 module.exports = React.createClass({
     propTypes: {
@@ -31,7 +24,8 @@ module.exports = React.createClass({
             valueKey: 'value',
             labelKey: 'label',
             clearable: true,
-            searchable: false
+            searchable: false,
+            type: 'bootstrap'
         }
     },
     getInitialState() {
@@ -62,7 +56,7 @@ module.exports = React.createClass({
         let selIndex = _.findIndex(this.state.selections, this.props.valueKey, option[this.props.valueKey]);
 
         let selected = selIndex === -1;
-        if ( selIndex !== -1 ) {
+        if ( !selected ) {
             this.state.selections.splice(selIndex, 1);
         } else {
             this.state.selections.push(option);
@@ -127,7 +121,12 @@ module.exports = React.createClass({
         this.props.onChange(null, []);
     },
     render() {
-        return this.render_elemental();
+        if ( this.props.type === 'elemental') {
+            return this.render_elemental();
+        } else if ( this.props.type === 'bootstrap') {
+            return this.render_bootstrap();
+        }
+        return this.render_bootstrap();
     },
     render_bootstrap() {
         let menu = this.state.listOpen ? this.buildOptions() : null;

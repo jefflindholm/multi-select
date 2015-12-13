@@ -262,10 +262,6 @@
   padding: .25rem;
   background-color: #EDEDED;
   border-bottom: 1px solid rgba(51, 51, 51, 0.1);
-  user-select: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
   font-size: 1.2rem;
   font-weight: bold;
   color: #000;
@@ -290,10 +286,6 @@
   padding: .25rem;
   border-bottom: 1px solid rgba(51, 51, 51, 0.1);
   cursor: pointer;
-  user-select: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
 }
 .r-ss-dropdown .r-ss-dropdown-option:last-child {
   border-bottom: none;
@@ -351,10 +343,6 @@
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
   box-shadow: 1px 1px 1px #333;
-  user-select: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
 }
 .r-ss-tag.r-ss-tag-label {
   white-space: nowrap;

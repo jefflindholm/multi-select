@@ -1,48 +1,27 @@
 var _ = require('lodash');
 var React = require('react');
 var Reflux = require('reflux');
-var MultiSelect = require('react-bootstrap-multiselect');
 var Actions = require('../../actions');
-var MarketStore = require('../../stores/market-store');
+
+import BaseMs from './base-ms';
+
+var DataStore = require('../../stores/market-store');
 
 module.exports = React.createClass({
     mixins: [
-        Reflux.listenTo(MarketStore, 'onDataChange')
+        Reflux.listenTo(DataStore, 'onDataChange'),
+        BaseMs
     ],
-    onDataChange: function(event, data) {
-        this.setState({data: data.map(function(d){return {value: d.id, label: d.name, parent: d.region_id}})});
-    },
-    getInitialState: function() {
-        return { data: [], selected: [] }
-    },
     componentWillMount: function() {
         Actions.getMarkets();
     },
-    handleChange: function(item, checked) {
-        var list = this.state.selected;
-        if ( checked ) {
-            list.push({id:item.context.value});
-        } else {
-            _.remove(list, 'id', item.context.value);
-        }
-        var data = this.state.data;
-        data[_.findIndex(data, 'value', item.context.value)].selected = checked;
-
-        if ( this.props.onSelectedChanged !== undefined) {
-            this.props.onSelectedChanged(list);
-        }
-        this.setState({data: data, selected: list});
-    },
-    render: function () {
+    filter() {
         var data;
         if ( this.props && this.props.regions && this.props.regions.length > 0) {
-            data = _.filter(this.state.data, function(m){ return _.find(this.props.regions, 'id', m.parent) }.bind(this));
+            data = _.filter(this.state.data, function(m){ return _.find(this.props.regions, 'id', m.org.region_id) }.bind(this));
         } else {
             data = this.state.data;
         }
-        data = _.sortBy(data, 'label');
-        return (
-            <MultiSelect multiple data={data} onChange={this.handleChange} />
-        );
+        return data;
     }
 });
