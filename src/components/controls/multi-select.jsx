@@ -10,6 +10,7 @@ module.exports = React.createClass({
         searchable: React.PropTypes.bool,
         initialValues: React.PropTypes.arrayOf(React.PropTypes.object),
         items: React.PropTypes.arrayOf(React.PropTypes.object),
+        hiddenKey: React.PropTypes.string,
         labelKey: React.PropTypes.string,
         valueKey: React.PropTypes.string
     },
@@ -23,6 +24,7 @@ module.exports = React.createClass({
             onChange: function() {},
             valueKey: 'value',
             labelKey: 'label',
+            hiddenKey: 'hidden',
             clearable: true,
             searchable: false,
             type: 'bootstrap'
@@ -42,6 +44,7 @@ module.exports = React.createClass({
             let newItem = {};
             newItem[newProps.valueKey] = item[newProps.valueKey];
             newItem[newProps.labelKey] = item[newProps.labelKey];
+            newItem[newProps.hiddenKey] = item[newProps.hiddenKey];
             return newItem;
         });
         let selections = newProps.initialValues.map(function(val){
@@ -75,6 +78,9 @@ module.exports = React.createClass({
             classes = classNames('r-ss-dropdown-option', {
                 'r-ss-selected': dataOption.selected
             });
+        if ( dataOption[this.props.hiddenKey] ) {
+            classes += ' hidden-li';
+        }
 
         return (
             <li ref={indexRef}
@@ -190,4 +196,5 @@ module.exports = React.createClass({
             </div>
         );
     }
+
 });

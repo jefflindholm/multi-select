@@ -57,17 +57,17 @@ module.exports = React.createClass({
                             <FormLabel style={labelStyle1}>State</FormLabel>
                             <StateMs type='elemental' values={this.state.states} countries={this.state.countries} onChange={this.statesChanged}/>
                         </FormField>
-                        <FormField>
-                            <FormLabel style={labelStyle1}>Region</FormLabel>
-                            <RegionMs type='elemental' values={this.state.regions} onChange={this.regionsChanged}/>
-                        </FormField>
-                        <FormField>
-                            <FormLabel style={labelStyle1}>Market</FormLabel>
-                            <MarketMs type='elemental' values={this.state.markets} regions={this.state.regions} onChange={this.marketsChanged}/>
-                        </FormField>
                     </Form>
                 </Col>
             </Row>
         );
+        //<FormField>
+        //    <FormLabel style={labelStyle1}>Region</FormLabel>
+        //    <RegionMs type='elemental' values={this.state.regions} onChange={this.regionsChanged}/>
+        //</FormField>
+        //<FormField>
+        //<FormLabel style={labelStyle1}>Market</FormLabel>
+        //    <MarketMs type='elemental' values={this.state.markets} regions={this.state.regions} onChange={this.marketsChanged}/>
+        //</FormField>
     }
 });

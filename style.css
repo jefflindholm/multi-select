@@ -1,3 +1,7 @@
+.hidden-li {
+  display: none;
+}
+
 .r-ss-remove-button {
   opacity: .25;
   position: absolute;

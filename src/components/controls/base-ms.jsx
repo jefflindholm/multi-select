@@ -8,7 +8,7 @@ module.exports = {
         this.props.onChange(selected);
     },
     onDataChange(event, data) {
-        this.setState({data: data.map(function(d){return {id: d.id, text: d.name, org: d}})});
+        this.setState({data: data.map(function(d){return {id: d.id, text: d.name, hidden: false, org: d}})});
     },
     getInitialState: function() {
         return { data: [], selected: [] }

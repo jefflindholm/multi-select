@@ -37,7 +37,6 @@ var notify = function (error) {
 
 var bundler = watchify(browserify({
     entries: ['./src/app.jsx'],
-//  transform: [reactify],
     transform: [["babelify", {presets: ["es2015", 'react']}]],
     extensions: ['.jsx'],
     debug: true,
@@ -53,7 +52,7 @@ function bundle() {
         .pipe(source('main.js'))
         .pipe(gulp.dest('./'))
 }
-bundler.on('update', bundle)
+bundler.on('update', bundle);
 
 gulp.task('build', function () {
     bundle()
@@ -88,11 +87,10 @@ gulp.task('less', function() {
         .pipe(less())
         .pipe(concat('style.css'))
         .pipe(gulp.dest('./'));
-;
+});
 
-})
-gulp.task('default', ['build', 'serve', 'sass', 'less', 'watch']);
+gulp.task('default', ['build', 'serve', 'less', 'watch']);
 
 gulp.task('watch', function () {
-    gulp.watch('./sass/**/*.scss', ['sass']);
+    gulp.watch('./less/**/*.less', ['less']);
 });
