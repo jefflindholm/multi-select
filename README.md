@@ -25,10 +25,6 @@ I needed a drop down multi select that worked with react, and never grew in size
         );
     }
 
-	var users = new SqlTable({
-		TableName: 'users',
-		columns: [{ColumnName: 'id'}, {ColumnName: 'username'}, {ColumnName: 'password'}]
-	});
 ```
 
 type = elemental or bootstrap if you use elemental you will be using items from a nice UI library for react elemental (elemental-ui.com) bootstrap will only use bootstrap items
