@@ -12,16 +12,22 @@ module.exports = React.createClass({
         Reflux.listenTo(DataStore, 'onDataChange'),
         BaseMs
     ],
+    getDefaultProps() {
+        return { regions: [] };
+    },
     componentWillMount: function() {
         Actions.getMarkets();
     },
     filter() {
-        var data;
-        if ( this.props && this.props.regions && this.props.regions.length > 0) {
-            data = _.filter(this.state.data, function(m){ return _.find(this.props.regions, 'id', m.org.region_id) }.bind(this));
-        } else {
-            data = this.state.data;
-        }
+        var data = this.state.data.map((s) =>{
+            if ( this.props.regions.length > 0 ) {
+                s.hidden = !_.find(this.props.regions, 'id', s.org.region_id);
+            } else {
+                s.hidden = false;
+            }
+            return s;
+        });
+
         return data;
     }
 });
