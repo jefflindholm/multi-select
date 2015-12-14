@@ -8,7 +8,7 @@ A simple multi-select drop down, styles and some code shamelessly lifted from re
 I needed a drop down multi select that worked with react, and never grew in size. I did not need to show the selected items in the text I just needed to say how many were selected and move on.
 
 * Examples
-
+```
     import {MultiList} from 'react-multi-dropdown'
 
     ...
@@ -29,7 +29,7 @@ I needed a drop down multi select that worked with react, and never grew in size
 		TableName: 'users',
 		columns: [{ColumnName: 'id'}, {ColumnName: 'username'}, {ColumnName: 'password'}]
 	});
-
+```
 
 type = elemental or bootstrap if you use elemental you will be using items from a nice UI library for react elemental (elemental-ui.com) bootstrap will only use bootstrap items
 
