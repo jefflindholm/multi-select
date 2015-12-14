@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var React = require('react');
 
-import MultiList from './multi-select';
+import MultiList from 'react-multi-dropdown';
  
 module.exports = {
     handleChange(item, selected) {

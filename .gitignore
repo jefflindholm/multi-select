@@ -1,4 +1,5 @@
-multi-selectjs
+multi-select.js
+*.tgz
 /**/.settings
 /**/.classpath
 /**/.project

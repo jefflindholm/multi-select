@@ -2,7 +2,7 @@
   "name": "react-multi-dropdown",
   "version": "1.0.0",
   "description": "Muli-select drop down",
-  "main": "index.js",
+  "main": "multi-select.js",
   "scripts": {
     "elemental-css": "lessc .\\node_modules\\elemental\\less\\elemental.less elemental.css",
     "less": "gulp less",

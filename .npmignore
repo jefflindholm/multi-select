@@ -1,5 +1,6 @@
 gulpfile.js
 *.jsx
+*.tgz
 **/demo
 **/less
 **/.idea
