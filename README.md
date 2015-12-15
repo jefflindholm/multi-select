@@ -32,10 +32,12 @@ type = elemental or bootstrap if you use elemental you will be using items from 
 you will need the style.css file included, and if you use elemental you can use the elemental.css I have or generate the css from the less files in elemental
 
 There is a demo directory on github if you pull everything down
+```
 npm pack
 cd demo
 npm install
 gulp
+```
 
 there should be a window popped on your browser, click on the PageOne menu item at the top, the demo has a number of things I was playing with. It has routing and reflux setup with data stores.
 
